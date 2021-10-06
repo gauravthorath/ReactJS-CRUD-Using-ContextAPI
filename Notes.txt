@@ -1,7 +1,0 @@
-Steps to Create a new Project
-==============================
-Step 1: Created Git repository on github
-Step 2: Cloned repository in VS code using command: git clone https://github.com/gauravthorath/MemberPortalReact.git
-Step 3: Create React Project using following command: npx create-react-app --template typescript
-Step 4: go to project folder and run "npm start" command
-
