@@ -1,14 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { useHistory, Link } from "react-router-dom";
+import React, { useEffect, useState, useContext } from "react";
+import { useHistory } from "react-router-dom";
+import { MemberContext } from "../App";
 
 export default function Editmember(match: any) {
-  const [memberData, setMemberData] = useState({
+  const { members, setMembers } = useContext(MemberContext);
+  const [member, setMember] = useState({
     firstName: "",
     lastName: "",
     salary: "",
   });
 
-  const [index, setIndex] = useState("");
+  const [index, setIndex] = useState(0);
 
   let history = useHistory();
 
@@ -18,12 +20,22 @@ export default function Editmember(match: any) {
 
   let handleChange = (e: any) => {
     const { name, value } = e.target;
-    setMemberData((prevState) => ({ ...prevState, [name]: value }));
+    setMember((prevState) => ({ ...prevState, [name]: value }));
+  };
+
+  let handleUpdate = () => {
+    let tmpMembers = [...members];
+    tmpMembers[index].firstName = member.firstName;
+    tmpMembers[index].lastName = member.lastName;
+    tmpMembers[index].salary = member.salary;
+    setMembers(tmpMembers);
+    history.push("/memberlist");
+    alert("Member details updated sucessfully!");
   };
 
   useEffect(() => {
     if (match.location.state !== undefined) {
-      setMemberData(match.location.state.item);
+      setMember(match.location.state.item);
       setIndex(match.location.state.index);
     }
   }, [match.location.state]);
@@ -38,7 +50,7 @@ export default function Editmember(match: any) {
               type="text"
               id="firstName"
               name="firstName"
-              value={memberData.firstName}
+              value={member.firstName}
               onChange={handleChange}
             ></input>
           </td>
@@ -50,7 +62,7 @@ export default function Editmember(match: any) {
               type="text"
               id="lastName"
               name="lastName"
-              value={memberData.lastName}
+              value={member.lastName}
               onChange={handleChange}
             ></input>
           </td>
@@ -62,7 +74,7 @@ export default function Editmember(match: any) {
               type="text"
               id="salary"
               name="salary"
-              value={memberData.salary}
+              value={member.salary}
               onChange={handleChange}
             ></input>
           </td>
@@ -70,15 +82,23 @@ export default function Editmember(match: any) {
 
         <tr>
           <td>
-            <Link
+            {/* <Link
               className="btnPrimary"
               to={{
                 pathname: "/memberList",
-                state: { memberData, Operation: "Edit", indexId: index },
+                state: { member, Operation: "Edit", indexId: index },
               }}
             >
               Update
-            </Link>
+            </Link> */}
+            <button
+              name="update"
+              value="Update"
+              onClick={handleUpdate}
+              className="btnPrimary"
+            >
+              Update
+            </button>
           </td>
           <td>
             <button
